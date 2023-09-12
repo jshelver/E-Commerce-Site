@@ -1,0 +1,8 @@
+#  Client
+/client/.vscode
+/client/node_modules
+
+# Server
+/server/.vscode
+/server/node_modules
+/server/.env
