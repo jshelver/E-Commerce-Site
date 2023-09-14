@@ -66,6 +66,7 @@ async function removeFromCart(productId) {
 
 .checkout-button {
 	margin-top: 40px;
+	margin-bottom: 80px;
 	width: 500px;
 	height: 50px;
 	border: none;

@@ -88,6 +88,7 @@ async function addToCart() {
 
 .description-wrapper {
 	margin-top: 20px;
+	margin-bottom: 80px;
 	width: 80%;
 	max-width: 800px;
 }

@@ -9,22 +9,6 @@ onMounted(async () => {
 	const response = await axios.get('/api/products/');
 	products.value = response.data;
 })
-
-async function addTodo(e) {
-	e.preventDefault();
-	const response = await axios.post("/api/todoList/", {
-		title: title.value,
-		description: description.value
-	});
-	todos.value.push(response.data);
-	title.value = "";
-	description.value = "";
-}
-
-async function removeTodo(item, i) {
-	await axios.delete("/api/todoList/" + item._id);
-	todos.value.splice(i, 1);
-}
 </script>
 
 <template>
@@ -65,5 +49,6 @@ async function removeTodo(item, i) {
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
+	margin-bottom: 50px;
 }
 </style>
