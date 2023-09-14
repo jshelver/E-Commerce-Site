@@ -6,7 +6,7 @@ import Products from './routes/api/Products';
 import Users from './routes/api/Users';
 
 // Load .env file
-dotenv.config();
+dotenv.config({ path: '../.env'});
 
 const app = express();
 app.use(bodyParser.json());

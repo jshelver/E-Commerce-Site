@@ -1,11 +1,27 @@
 <script setup>
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { products } from '../data/fake-data';
 import NotFoundView from './NotFoundView.vue';
+import axios from 'axios';
+
+// Only one user for now, so we can hardcode the user ID
+const userId = '12345';
+const product = ref({});
 
 const route = useRouter();
-const product = products.find(product => product.id === route.currentRoute.value.params.id);
 
+onMounted(async () => {
+	const response = await axios.get(`/api/products/${route.currentRoute.value.params.id}`);
+	product.value = response.data[0];
+})
+
+async function addToCart() {
+	const response = await axios.post(`/api/users/${userId}/cart/`, {
+		productId: product.value.id
+	});
+
+	console.log(response.data);
+}
 </script>
 
 <template>
@@ -13,7 +29,7 @@ const product = products.find(product => product.id === route.currentRoute.value
 		<img :src="product.imageUrl" :alt="product.name" class="product-image">
 		<h1 class="product-heading">{{ product.name }}</h1>
 		<p class="product-rating">Average Rating:  {{ product.averageRating }}</p>
-		<button class="cart-button">Add to Cart</button>
+		<button class="cart-button" @click="addToCart">Add to Cart</button>
 		<div class="description-wrapper">
 			<h1 class="description-heading">Description</h1>
 			<p class="description-content">{{ product.description }}</p>

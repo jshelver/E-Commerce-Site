@@ -1,15 +1,29 @@
 <script setup>
-import { cartItems } from '../data/fake-data'
-import CartItemCard from '../components/CartItemCard.vue'
+import { ref, onMounted } from 'vue';
+import CartItemCard from '../components/CartItemCard.vue';
+import axios from 'axios';
 
+// Only one user for now, so we can hardcode the user ID
+const userId = '12345';
+const cartItems = ref([]);
+
+onMounted(async () => {
+	const response = await axios.get(`/api/users/${userId}/cart`);
+	cartItems.value = response.data.cartItems;
+});
+
+async function removeFromCart(productId) {
+	const response = await axios.delete(`/api/users/${userId}/cart/${productId}`)
+	cartItems.value = response.data.cartItems;
+}
 </script>
 
 <template>
 	<div class="cart-wrapper">
 		<h1 class="cart-heading">Shopping Cart</h1>
 		<hr class="hr">
-		<div class="cart-items-wrapper" v-for="product in cartItems">
-			<CartItemCard  :product="product" :key="product.id" />
+		<div class="cart-items-wrapper" v-for="productId in cartItems">
+			<CartItemCard  :productId="productId" :key="productId" v-on:removeCartItem="removeFromCart"/>
 			<hr class="cart-hr">
 		</div>
 		<button class="checkout-button">Proceed to Checkout</button>

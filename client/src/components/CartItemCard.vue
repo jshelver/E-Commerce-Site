@@ -1,6 +1,17 @@
 <script setup>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 
-const props = defineProps(['product'])
+const product = ref({});
+
+const props = defineProps({
+    productId: String
+})
+
+onMounted(async () => {
+    const response = await axios.get(`/api/products/${props.productId}`);
+    product.value = response.data[0];
+})
 </script>
 
 <template>
@@ -12,7 +23,7 @@ const props = defineProps(['product'])
                 <p class="product-price">${{ product.price }}</p>
             </div>
         </div>
-        <button class="remove-button">Remove from Cart</button>
+        <button class="remove-button" @click="$emit('removeCartItem', productId)">Remove from Cart</button>
     </div>
 </template>
 

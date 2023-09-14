@@ -10,10 +10,10 @@ router.get('/:userId/cart', async (req, res) => {
     try {
         // Find user in database
         const user = await User.findOne({ userId: userId});
-        if (!user) throw new Error('No User found')
+        if (!user) throw new Error('No User found');
         res.status(200).json({ cartItems: user.cartItems });
     } catch (error) {
-        res.status(500).json({ message: error.message })
+        res.status(500).json({ message: error.message });
     }
 });
 
@@ -48,8 +48,13 @@ router.delete('/:userId/cart/:productId', async (req, res) => {
 
         if (!user) throw new Error('No User found');
 
-        // Remove product from user's cart and save it
-        user.cartItems = user.cartItems.filter((pId) => pId !== parseInt(productId));
+        // Remove product from user's cart (only one even if there are multiple)
+        for (let i = 0; i < user.cartItems.length; i++) {
+            if (user.cartItems[i] === parseInt(productId)) {
+                user.cartItems.splice(i, 1);
+                break;
+            }
+        }
         await user.save();
         res.status(200).json({ cartItems: user.cartItems });
     } catch (error) {

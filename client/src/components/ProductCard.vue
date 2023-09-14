@@ -6,7 +6,7 @@ const props = defineProps(['product'])
 
 <template>
     <div class="card-wrapper">
-        <RouterLink v-bind:to="'/products/' + product.id">
+        <RouterLink :to="'/products/' + product.id">
             <img :src="product.imageUrl" :alt="product.name" class="product-image">
             <h1 class="product-name">{{ product.name }}</h1>
             <p class="product-price">${{ product.price }}</p>
